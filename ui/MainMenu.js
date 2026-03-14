@@ -26,5 +26,32 @@ export default class MainMenu {
             ctx.fillStyle = '#0f0';
             ctx.fillText('PRESS SPACE TO START', width / 2, height / 2 + 80);
         }
+
+        // Draw How To Play button
+        ctx.fillStyle = '#222';
+        ctx.fillRect(width / 2 - 120, height / 2 + 120, 240, 50);
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(width / 2 - 120, height / 2 + 120, 240, 50);
+        ctx.fillStyle = '#fff';
+        ctx.font = '20px "Press Start 2P"';
+        ctx.textAlign = 'center';
+        ctx.fillText('HOW TO PLAY', width / 2, height / 2 + 155);
+
+        // Store button area for click detection
+        MainMenu.buttonArea = {
+            x: width / 2 - 120,
+            y: height / 2 + 120,
+            w: 240,
+            h: 50
+        };
+        static handleClick(x, y) {
+            if (!MainMenu.buttonArea) return false;
+            const { x: bx, y: by, w, h } = MainMenu.buttonArea;
+            if (x >= bx && x <= bx + w && y >= by && y <= by + h) {
+                return true;
+            }
+            return false;
+        }
     }
 }

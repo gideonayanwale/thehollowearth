@@ -1,5 +1,6 @@
 import GameManager from './GameManager.js';
 import MainMenu from '../ui/MainMenu.js';
+import HowToPlay from '../ui/HowToPlay.js';
 import HUD from '../ui/HUD.js';
 import GameOverScreen from '../ui/GameOverScreen.js';
 import MerchantUI from '../ui/MerchantUI.js';
@@ -96,6 +97,8 @@ class Renderer {
 
         if (GameManager.state === 'MAIN_MENU') {
             MainMenu.draw(this.ctx, this.width, this.height);
+        } else if (GameManager.state === 'HOW_TO_PLAY') {
+            HowToPlay.draw(this.ctx, this.width, this.height);
         } else if (GameManager.state === 'PLAYING') {
             HUD.draw(this.ctx, this.width, this.height);
         } else if (GameManager.state === 'GAME_OVER') {
