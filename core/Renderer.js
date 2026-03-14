@@ -33,21 +33,20 @@ class Renderer {
     }
 
     draw() {
-                // Expansion: Draw particles and power-up indicators
-                if (GameManager.particleSystem) {
-                    GameManager.particleSystem.draw(this.ctx);
-                }
-                if (GameManager.powerUpSystem) {
-                    GameManager.powerUpSystem.drawPowerUpIndicators(this.ctx, this.width, this.height);
-                }
-                // Mini achievement UI
-                if (GameManager.achievementSystem) {
-                    AchievementUI.drawMini(this.ctx, this.width, this.height);
-                }
         if (!this.ctx) return;
 
         this.ctx.fillStyle = '#000';
         this.ctx.fillRect(0, 0, this.width, this.height);
+
+        if (GameManager.state === 'MAIN_MENU') {
+            MainMenu.draw(this.ctx, this.width, this.height);
+            return;
+        }
+
+        if (GameManager.state === 'HOW_TO_PLAY') {
+            HowToPlay.draw(this.ctx, this.width, this.height);
+            return;
+        }
 
         this.ctx.save();
 
@@ -68,6 +67,16 @@ class Renderer {
 
             if (GameManager.player) {
                 GameManager.player.draw(this.ctx);
+            }
+
+            if (GameManager.particleSystem) {
+                GameManager.particleSystem.draw(this.ctx);
+            }
+            if (GameManager.powerUpSystem) {
+                GameManager.powerUpSystem.drawPowerUpIndicators(this.ctx, this.width, this.height);
+            }
+            if (GameManager.achievementSystem) {
+                AchievementUI.drawMini(this.ctx, this.width, this.height);
             }
         }
 
@@ -95,11 +104,7 @@ class Renderer {
             return;
         }
 
-        if (GameManager.state === 'MAIN_MENU') {
-            MainMenu.draw(this.ctx, this.width, this.height);
-        } else if (GameManager.state === 'HOW_TO_PLAY') {
-            HowToPlay.draw(this.ctx, this.width, this.height);
-        } else if (GameManager.state === 'PLAYING') {
+        if (GameManager.state === 'PLAYING') {
             HUD.draw(this.ctx, this.width, this.height);
         } else if (GameManager.state === 'GAME_OVER') {
             GameOverScreen.draw(this.ctx, this.width, this.height);

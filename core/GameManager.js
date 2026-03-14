@@ -56,6 +56,7 @@ class GameManager {
     }
 
     startGame() {
+        this.audioManager.init();
         this.resetGame();
         this.state = 'PLAYING';
     }
