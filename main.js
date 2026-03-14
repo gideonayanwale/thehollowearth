@@ -3,18 +3,27 @@ import Renderer from './core/Renderer.js';
 import MainMenu from './ui/MainMenu.js';
 
 let lastTime = 0;
+let menuFrameTick = 0;
 
 function gameLoop(timestamp) {
+    requestAnimationFrame(gameLoop);
     const dt = timestamp - lastTime;
     lastTime = timestamp;
+
+    if (GameManager.state === 'MAIN_MENU') {
+        menuFrameTick += 1;
+        if (menuFrameTick % 2 === 0) {
+            return;
+        }
+    } else {
+        menuFrameTick = 0;
+    }
 
     // Cap delta time to prevent huge jumps if tab is inactive
     const cappedDt = Math.min(dt, 100);
 
     GameManager.update(cappedDt);
     Renderer.draw();
-
-    requestAnimationFrame(gameLoop);
 }
 
 // Initialize game
@@ -79,13 +88,12 @@ function init() {
     window.addEventListener('resize', resizeCanvas);
     window.GameManager = GameManager;
     window.MainMenu = MainMenu;
-    GameManager.init();
-    Renderer.init(canvas);
-    // Start loop
-    requestAnimationFrame((timestamp) => {
-        lastTime = timestamp;
-        gameLoop(timestamp);
-    });
+    setTimeout(() => {
+        GameManager.init();
+        Renderer.init(canvas);
+        lastTime = performance.now();
+        requestAnimationFrame(gameLoop);
+    }, 0);
 }
 
 window.onload = init;
