@@ -22,7 +22,13 @@ export default class Player extends Entity {
     }
 
     update(dt) {
-        if (GameManager.inputManager.isDown('ArrowLeft') this.jumpForce : -this.jumpForce;
+        if (GameManager.inputManager.isDown('ArrowLeft')) {
+            this.vx = -this.jumpForce;
+        } else if (GameManager.inputManager.isDown('ArrowRight')) {
+            this.vx = this.jumpForce;
+        } else {
+            this.vx = 0;
+        }
         }
 
         this.lanternFuel = Math.max(0, this.lanternFuel - (dt / 3000));
