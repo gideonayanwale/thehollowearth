@@ -5,6 +5,8 @@ class AudioManager {
         this.ambientTracks = {};
         this.sfxBuffers = {};
         this.currentAmbientNode = null;
+        this.bgAudio = null;
+        this.bgAudioUrl = 'assets/audio/relax_background1.ogg';
         this.bgMusic = null;
         this.bgInterval = null;
     }
@@ -31,6 +33,37 @@ class AudioManager {
     }
 
     startBackgroundMusic() {
+        if (this.bgAudio) {
+            const resume = this.bgAudio.play();
+            if (resume && resume.catch) {
+                resume.catch(() => {
+                    this.startSynthBackground();
+                });
+            }
+            return;
+        }
+
+        const audio = new Audio(this.bgAudioUrl);
+        audio.loop = true;
+        audio.preload = 'auto';
+        audio.volume = 0.25;
+        this.bgAudio = audio;
+
+        const canPlayOgg = !audio.canPlayType || !!audio.canPlayType('audio/ogg; codecs=\"vorbis\"');
+        if (!canPlayOgg) {
+            this.startSynthBackground();
+            return;
+        }
+
+        const playPromise = audio.play();
+        if (playPromise && playPromise.catch) {
+            playPromise.catch(() => {
+                this.startSynthBackground();
+            });
+        }
+    }
+
+    startSynthBackground() {
         if (this.bgMusic) {
             if (this.context && this.context.state === 'suspended') {
                 this.context.resume();
@@ -76,6 +109,11 @@ class AudioManager {
     }
 
     stopBackgroundMusic() {
+        if (this.bgAudio) {
+            this.bgAudio.pause();
+            this.bgAudio.currentTime = 0;
+            this.bgAudio = null;
+        }
         if (!this.bgMusic) return;
         if (this.bgInterval) {
             clearInterval(this.bgInterval);
