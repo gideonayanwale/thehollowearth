@@ -98,6 +98,14 @@ class GameManager {
             if (this.inputManager.wasJustPressed('Space')) {
                 this.startGame();
             }
+        } else if (this.state === 'HOW_TO_PLAY') {
+            if (
+                this.inputManager.wasJustPressed('Escape') ||
+                this.inputManager.wasJustPressed('Space') ||
+                this.inputManager.wasJustPressed('Enter')
+            ) {
+                this.state = 'MAIN_MENU';
+            }
         } else if (this.state === 'GAME_OVER') {
             if (this.inputManager.wasJustPressed('Space')) {
                 this.resetGame();
