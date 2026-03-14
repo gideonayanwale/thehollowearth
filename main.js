@@ -18,9 +18,15 @@ function gameLoop(timestamp) {
 
 // Initialize game
 function init() {
+    const canvas = document.getElementById('gameCanvas');
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
     GameManager.init();
-    Renderer.init(document.getElementById('gameCanvas'));
-    
+    Renderer.init(canvas);
     // Start loop
     requestAnimationFrame((timestamp) => {
         lastTime = timestamp;

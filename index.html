@@ -13,21 +13,26 @@
             background: #111;
             color: #eee;
             font-family: 'Press Start 2P', monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 100vw;
             height: 100vh;
             overflow: hidden;
         }
 
-        canvas {
-            border: 2px solid #333;
-            image-rendering: pixelated;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        #game-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
         }
 
-        #game-container {
-            position: relative;
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+            border: none;
+            image-rendering: pixelated;
+            box-shadow: none;
         }
     </style>
 </head>
@@ -38,7 +43,7 @@
 
     <div id="game-container">
         <!-- Main game canvas -->
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <canvas id="gameCanvas"></canvas>
     </div>
     <script type="module" src="main.js"></script>
 </body>
