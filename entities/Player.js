@@ -29,7 +29,6 @@ export default class Player extends Entity {
         } else {
             this.vx = 0;
         }
-        }
 
         this.lanternFuel = Math.max(0, this.lanternFuel - (dt / 3000));
 
@@ -40,9 +39,6 @@ export default class Player extends Entity {
                 this.hp = Math.min(this.maxHp, this.hp + this.regenerationRate);
                 this.lastRegenTime = 0;
             }
-        }
-        } else {
-            this.vx = 0;
         }
 
         const onGround = this.vy === 0;
