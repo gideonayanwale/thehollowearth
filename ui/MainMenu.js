@@ -28,10 +28,15 @@ export default class MainMenu {
             ctx.fillText('PRESS SPACE TO START', width / 2, height / 2 + 80);
         }
 
-        const buttonX = width / 2 - 120;
-        const buttonY = height / 2 + 120;
-        const buttonW = 240;
-        const buttonH = 50;
+        const pulse = Math.sin(Date.now() / 400) * 0.02;
+        const hoverScale = MainMenu.isButtonHovered ? 0.03 : pulse;
+        const buttonScale = 1 + hoverScale;
+        const baseWidth = 240;
+        const baseHeight = 50;
+        const buttonW = baseWidth * buttonScale;
+        const buttonH = baseHeight * buttonScale;
+        const buttonX = width / 2 - buttonW / 2;
+        const buttonY = height / 2 + 120 - (buttonH - baseHeight) / 2;
 
         const fillColor = MainMenu.isButtonPressed
             ? '#0ff'
@@ -40,8 +45,9 @@ export default class MainMenu {
                 : '#222';
         const borderColor = MainMenu.isButtonHovered ? '#0ff' : '#fff';
         const textColor = MainMenu.isButtonPressed ? '#000' : '#fff';
+        const glow = MainMenu.isButtonHovered ? 18 : 10 + Math.sin(Date.now() / 180) * 10;
         ctx.shadowColor = MainMenu.isButtonHovered ? '#0ff' : '#000';
-        ctx.shadowBlur = MainMenu.isButtonHovered ? 15 : 0;
+        ctx.shadowBlur = glow;
 
         ctx.fillStyle = fillColor;
         ctx.fillRect(buttonX, buttonY, buttonW, buttonH);
@@ -55,6 +61,10 @@ export default class MainMenu {
         ctx.font = '20px "Press Start 2P"';
         ctx.textAlign = 'center';
         ctx.fillText('HOW TO PLAY', width / 2, height / 2 + 155);
+
+        ctx.font = '14px "Press Start 2P"';
+        ctx.fillStyle = MainMenu.isButtonHovered ? '#0ff' : '#bbb';
+        ctx.fillText('Click to learn the basics', width / 2, buttonY + buttonH + 34);
 
         MainMenu.buttonArea = { x: buttonX, y: buttonY, w: buttonW, h: buttonH };
     }
