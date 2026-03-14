@@ -33,12 +33,12 @@ class AudioManager {
     }
 
     startBackgroundMusic() {
+        this.unlock();
         if (this.bgAudio) {
+            if (!this.bgAudio.paused) return;
             const resume = this.bgAudio.play();
             if (resume && resume.catch) {
-                resume.catch(() => {
-                    this.startSynthBackground();
-                });
+                resume.catch(() => {});
             }
             return;
         }
@@ -57,10 +57,17 @@ class AudioManager {
 
         const playPromise = audio.play();
         if (playPromise && playPromise.catch) {
-            playPromise.catch(() => {
+            playPromise.catch((err) => {
+                if (err && err.name === 'NotAllowedError') {
+                    return;
+                }
                 this.startSynthBackground();
             });
         }
+
+        audio.addEventListener('error', () => {
+            this.startSynthBackground();
+        });
     }
 
     startSynthBackground() {
@@ -126,6 +133,17 @@ class AudioManager {
             // Ignore stop errors if already stopped.
         }
         this.bgMusic = null;
+    }
+
+    resumeBackgroundMusic() {
+        if (this.bgAudio) {
+            const resume = this.bgAudio.play();
+            if (resume && resume.catch) {
+                resume.catch(() => {});
+            }
+            return;
+        }
+        this.startBackgroundMusic();
     }
 
     playAmbientForLayer(layerIndex) {

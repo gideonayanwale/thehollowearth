@@ -167,6 +167,19 @@ function init() {
     window.addEventListener('resize', resizeCanvas);
     window.GameManager = GameManager;
     window.MainMenu = MainMenu;
+    const tryStartAudio = () => {
+        GameManager.audioManager.startBackgroundMusic();
+    };
+    window.addEventListener('keydown', tryStartAudio, { once: true });
+    window.addEventListener('pointerdown', tryStartAudio, { once: true });
+    window.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            GameManager.audioManager.resumeBackgroundMusic();
+        }
+    });
+    window.addEventListener('focus', () => {
+        GameManager.audioManager.resumeBackgroundMusic();
+    });
     setTimeout(() => {
         GameManager.init();
         Renderer.init(canvas);
