@@ -25,6 +25,7 @@ function init() {
     }
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
+    window.GameManager = GameManager;
     GameManager.init();
     Renderer.init(canvas);
     // Start loop
