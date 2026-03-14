@@ -47,7 +47,6 @@ class GameManager {
 
     init() {
         this.inputManager.init();
-        this.audioManager.init();
         this.goToMainMenu();
     }
 
@@ -56,7 +55,7 @@ class GameManager {
     }
 
     startGame() {
-        this.audioManager.init();
+        this.audioManager.startBackgroundMusic();
         this.resetGame();
         this.state = 'PLAYING';
     }

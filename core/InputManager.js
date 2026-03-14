@@ -8,6 +8,9 @@ class InputManager {
 
     init() {
         window.addEventListener('keydown', (e) => {
+            if (window.GameManager && window.GameManager.audioManager) {
+                window.GameManager.audioManager.startBackgroundMusic();
+            }
             if (!this.keysDown.has(e.code)) {
                 this.justPressed.add(e.code);
             }
@@ -50,6 +53,9 @@ class InputManager {
         });
 
         window.addEventListener('mousedown', (e) => {
+            if (window.GameManager && window.GameManager.audioManager) {
+                window.GameManager.audioManager.startBackgroundMusic();
+            }
             this.mouseButtons.add(e.button);
         });
 
