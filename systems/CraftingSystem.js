@@ -1,4 +1,7 @@
 export default class CraftingSystem {
+        update(dt) {
+            // No periodic logic yet, but required for GameManager compatibility
+        }
     constructor() {
         this.recipes = {
             healing_potion: {
