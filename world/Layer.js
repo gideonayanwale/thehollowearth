@@ -62,6 +62,8 @@ export default class Layer {
             for (let x = 0; x < this.cols; x++) {
                 this.grid[y][x].draw(ctx, this.tileSize);
             }
+        }
+    }
 
     drawProjectiles(ctx) {
         this.projectiles.forEach(projectile => {
@@ -71,8 +73,6 @@ export default class Layer {
             ctx.lineWidth = 1;
             ctx.strokeRect(projectile.x - projectile.width / 2, projectile.y - projectile.height / 2, projectile.width, projectile.height);
         });
-    }
-        }
     }
 
     drawEntities(ctx) {
