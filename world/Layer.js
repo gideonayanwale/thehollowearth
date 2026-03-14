@@ -11,6 +11,7 @@ export default class Layer {
         this.rooms = [];
         this.entities = [];
         this.pickups = [];
+        this.projectiles = [];
         this.spawnPoint = { x: 0, y: 0 };
 
         for (let y = 0; y < rows; y++) {
@@ -44,6 +45,15 @@ export default class Layer {
 
     update(dt) {
         this.entities.forEach(entity => entity.update(dt));
+        
+        // Update projectiles
+        this.projectiles = this.projectiles.filter(p => {
+            p.lifetime -= dt;
+            const dtSec = dt / 1000;
+            p.x += p.vx * dtSec;
+            p.y += p.vy * dtSec;
+            return p.lifetime > 0;
+        });
         this.pickups.forEach(pickup => pickup.update(dt));
     }
 
@@ -52,6 +62,16 @@ export default class Layer {
             for (let x = 0; x < this.cols; x++) {
                 this.grid[y][x].draw(ctx, this.tileSize);
             }
+
+    drawProjectiles(ctx) {
+        this.projectiles.forEach(projectile => {
+            ctx.fillStyle = '#ff8';
+            ctx.fillRect(projectile.x - projectile.width / 2, projectile.y - projectile.height / 2, projectile.width, projectile.height);
+            ctx.strokeStyle = '#f0f';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(projectile.x - projectile.width / 2, projectile.y - projectile.height / 2, projectile.width, projectile.height);
+        });
+    }
         }
     }
 

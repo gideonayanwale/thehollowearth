@@ -1,0 +1,17 @@
+{
+	"inputs": [
+		{
+			"id": "es_url",
+			"type": "promptString",
+			"description": "your elasticsearch url",
+			"password": false
+		},
+		{
+			"id": "es_api_key",
+			"type": "promptString",
+			"description": "your api key",
+			"password": true
+		}
+	],
+	"servers": {}
+}

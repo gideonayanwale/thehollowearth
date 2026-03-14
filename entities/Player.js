@@ -5,17 +5,36 @@ export default class Player extends Entity {
     constructor(x, y) {
         super(x, y, 24, 24);
         this.speed = 200;
+        this.maxHp = 100;
+        this.hp = 100;
         this.lanternRadius = 150;
+        this.maxLanternFuel = 100;
         this.lanternFuel = 100;
         this.lightBoost = 0;
-        this.inventory = { iron_ore: 0, explosive_powder: 0 };
+        this.inventory = { ore: 0, explosive_powder: 0, iron_ore: 0 };
+        
+        // Upgrade attributes
+        this.jumpForce = 300;
+        this.damageReduction = 0;
+        this.attackMultiplier = 1.0;
+        this.regenerationRate = 0;
+        this.lastRegenTime = 0;
     }
 
     update(dt) {
-        if (GameManager.inputManager.isDown('ArrowLeft') || GameManager.inputManager.isDown('KeyA')) {
-            this.vx = -this.speed;
-        } else if (GameManager.inputManager.isDown('ArrowRight') || GameManager.inputManager.isDown('KeyD')) {
-            this.vx = this.speed;
+        if (GameManager.inputManager.isDown('ArrowLeft') this.jumpForce : -this.jumpForce;
+        }
+
+        this.lanternFuel = Math.max(0, this.lanternFuel - (dt / 3000));
+
+        // Regeneration
+        if (this.regenerationRate > 0) {
+            this.lastRegenTime += dt;
+            if (this.lastRegenTime >= 1000) {
+                this.hp = Math.min(this.maxHp, this.hp + this.regenerationRate);
+                this.lastRegenTime = 0;
+            }
+        }
         } else {
             this.vx = 0;
         }
@@ -31,9 +50,24 @@ export default class Player extends Entity {
             this.lightBoost -= dt;
         }
 
+        // Expansion: Apply armor reduction
+        const armorBonus = GameManager.playerUpgrades?.getUpgradeBonus('armor') || 0;
+        this.armorRating = armorBonus * 0.1;
+
         super.update(dt);
 
         this.checkTileInteractions();
+    }
+
+    takeDamage(amount) {
+        // Expansion: Invincibility power-up
+        if (GameManager.powerUpSystem?.isPowerUpActive('invincible')) return;
+        const actualDamage = amount * (1 - this.armorRating);
+        this.hp -= actualDamage;
+        // Particle feedback
+        if (GameManager.particleSystem) {
+            GameManager.particleSystem.emit(this.x + this.width/2, this.y + this.height/2, 'blood', 5);
+        }
     }
 
     checkTileInteractions() {

@@ -16,12 +16,26 @@ class ScoreManager {
     }
 
     add(type, value) {
+        // Expansion: Apply difficulty multiplier
+        let multiplier = 1.0;
+        if (window.GameManager && window.GameManager.settingsMenu) {
+            multiplier = window.GameManager.settingsMenu.getDifficultyMultiplier('score');
+        }
+        const scaledValue = value * multiplier;
         if (this.breakdown[type] !== undefined) {
-            this.breakdown[type] += value;
-            this.total += value;
+            this.breakdown[type] += scaledValue;
+            this.total += scaledValue;
         } else {
             console.warn(`Unknown score type: ${type}`);
         }
+    }
+
+    canSpend(amount) {
+        return this.total >= amount;
+    }
+
+    subtract(amount) {
+        this.total -= amount;
     }
 
     getBreakdown() {

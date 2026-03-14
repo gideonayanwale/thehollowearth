@@ -10,10 +10,10 @@ export default class MainMenu {
         ctx.textAlign = 'center';
         ctx.shadowColor = '#0ff';
         ctx.shadowBlur = 10;
-        ctx.fillText('ANTIGRAVITY', width / 2, height / 2 - 60);
+        ctx.fillText('HOLLOW EARTH', width / 2, height / 2 - 60);
         ctx.shadowBlur = 0;
 
-        const highScoreStr = localStorage.getItem("antigravity_highscore");
+        const highScoreStr = localStorage.getItem("hollow_earth_highscore");
         const highScore = highScoreStr ? parseInt(highScoreStr, 10) : 0;
 
         ctx.font = '16px "Press Start 2P"';

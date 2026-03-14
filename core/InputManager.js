@@ -12,6 +12,36 @@ class InputManager {
                 this.justPressed.add(e.code);
             }
             this.keysDown.add(e.code);
+
+            // Expansion: UI toggles
+            if (e.key === 'i' || e.key === 'I') {
+                window.GameManager.uiState.showInventory = !window.GameManager.uiState.showInventory;
+            }
+            if (e.key === 'a' || e.key === 'A') {
+                window.GameManager.uiState.showAchievements = !window.GameManager.uiState.showAchievements;
+            }
+            if (e.key === 's' || e.key === 'S') {
+                window.GameManager.uiState.showUpgradeShop = !window.GameManager.uiState.showUpgradeShop;
+            }
+            if (e.key === 'Escape') {
+                window.GameManager.uiState.showInventory = false;
+                window.GameManager.uiState.showAchievements = false;
+                window.GameManager.uiState.showUpgradeShop = false;
+                window.GameManager.uiState.showSettings = false;
+            }
+            // Upgrade purchases (1-6)
+            if (e.key >= '1' && e.key <= '6' && window.GameManager.uiState.showUpgradeShop) {
+                const upgradeKeys = Object.keys(window.GameManager.playerUpgrades.upgrades);
+                const index = parseInt(e.key) - 1;
+                if (index < upgradeKeys.length) {
+                    const key = upgradeKeys[index];
+                    const cost = window.GameManager.playerUpgrades.getCost(key);
+                    if (window.GameManager.scoreManager.total >= cost) {
+                        window.GameManager.playerUpgrades.purchase(key, window.GameManager.scoreManager.total);
+                        window.GameManager.scoreManager.total -= cost;
+                    }
+                }
+            }
         });
 
         window.addEventListener('keyup', (e) => {
